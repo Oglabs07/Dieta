@@ -1,0 +1,57 @@
+DIETA TACO — app instalável (PWA)
+=================================
+
+O que tem aqui
+- index.html, app.js ......... o app (chat, alimentos, progresso, perfil)
+- taco.js .................... banco de alimentos: 593 itens da Tabela TACO (4ª ed., NEPA/UNICAMP, 2011)
+                               + 3 estimativas (leite líquido, whey, salada)
+- sw.js, manifest.webmanifest, icon-*.png ... fazem o app ser instalável e funcionar sem internet
+
+Os dados de cada pessoa (perfil, diário, medidas, alimentos cadastrados) ficam salvos
+em um banco de dados (IndexedDB) dentro do próprio celular. Cada celular tem o seu.
+
+PUBLICAR DE GRAÇA NO GITHUB PAGES (faça uma vez, de preferência no computador)
+1. Crie uma conta em https://github.com (se ainda não tiver).
+2. Clique em "+" (canto superior direito) > "New repository".
+   Nome: dieta  ·  marque "Public"  ·  clique em "Create repository".
+3. Na página do repositório, clique em "uploading an existing file"
+   (ou "Add file" > "Upload files").
+4. Descompacte o .zip e arraste TODOS os arquivos desta pasta (não a pasta em si).
+   Clique em "Commit changes".
+5. Vá em "Settings" > "Pages". Em "Branch", escolha "main" e "/ (root)" e clique em "Save".
+6. Espere 1 a 2 minutos. O endereço vai ser:  https://SEU-USUARIO.github.io/dieta/
+
+INSTALAR NO CELULAR
+- Android (Chrome): abra o endereço > menu ⋮ > "Instalar app" (ou "Adicionar à tela inicial").
+- iPhone (Safari): abra o endereço > botão Compartilhar > "Adicionar à Tela de Início".
+Depois de aberto uma vez, funciona sem internet.
+
+SEU IRMÃO
+Mande o mesmo endereço para ele. Ele instala, preenche o perfil dele (aba Perfil)
+e recebe as metas calculadas para as medidas dele. Os dados de vocês não se misturam.
+
+COMO AS METAS SÃO CALCULADAS (aba Perfil mostra a conta)
+- Gasto em repouso: fórmula de Mifflin-St Jeor
+    homem:  10 × peso + 6,25 × altura − 5 × idade + 5
+    mulher: 10 × peso + 6,25 × altura − 5 × idade − 161
+- × fator de atividade (1,2 / 1,375 / 1,55 / 1,725)
+- Ajuste do objetivo: secar −500 · perder devagar −300 · manter 0 · ganhar +300 kcal
+  (mínimo de 1500 kcal para homens e 1200 para mulheres)
+- Proteína: 2,0 g/kg (secar) · 1,8 g/kg (perder devagar/ganhar) · 1,6 g/kg (manter)
+- Gordura: 0,8 g/kg · Carboidrato: o que sobra das calorias
+É possível colocar metas manuais no Perfil.
+
+SOBRE OS DADOS DA TACO
+O PDF oficial é uma imagem escaneada, então os números foram lidos por OCR e conferidos
+automaticamente (kcal × kJ e soma da composição = 100 g). As linhas com problema foram
+corrigidas olhando o PDF. Pode ainda haver algum erro pontual: se um número parecer estranho,
+confira na tabela oficial e cadastre o alimento correto na aba Alimentos.
+Itens sem dados na TACO (leite de vaca integral líquido, leite desnatado UHT, coco verde,
+iogurte de abacaxi) não foram incluídos; o leite líquido entrou como estimativa.
+
+ATUALIZAR O APP
+Se receber arquivos novos, suba por cima no GitHub. Para o celular pegar a versão nova,
+feche e abra o app duas vezes.
+
+Faça backup de vez em quando: aba Perfil > "Exportar backup".
+Este app não substitui o acompanhamento de um nutricionista.

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f8a5b">
+<meta name="description" content="Diário de dieta com a Tabela TACO">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Dieta TACO</title>
+<style>
+:root{--bg:#f4f6f4;--card:#fff;--ink:#1c2420;--mute:#6a756f;--line:#e2e6e3;--acc:#1f8a5b;--acc2:#2f6fd6;--warn:#b8740f;--bad:#c2412d;--user:#1f8a5b}
+@media (prefers-color-scheme:dark){:root{--bg:#111412;--card:#1a1e1c;--ink:#e7ece9;--mute:#97a19c;--line:#2a302d;--user:#1d7a50}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:640px;margin:0 auto;padding-top:env(safe-area-inset-top)}
+header{padding:10px 14px 9px;background:var(--card);border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:baseline}
+.top b{font-size:17px}.top span{color:var(--mute);font-size:13px}
+.row{display:flex;justify-content:space-between;font-size:13px;margin-top:6px}
+.row span:first-child{color:var(--mute)}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);border-radius:6px;transition:width .3s}
+.bar.p i{background:var(--acc2)}.bar i.over{background:var(--bad)}
+.mini{font-size:12px;color:var(--mute);margin-top:5px}
+.view{flex:1;overflow-y:auto;display:none}
+.view.on{display:flex;flex-direction:column}
+#chat{padding:14px 12px;gap:10px}
+.pad{padding:14px;gap:12px}
+.msg{max-width:90%;padding:9px 12px;border-radius:14px;word-wrap:break-word}
+.bot{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.user{background:var(--user);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg ul{margin:4px 0;padding-left:18px}.msg li{margin:2px 0}
+.s{color:var(--mute);font-size:13px}
+.ok{color:var(--acc);font-weight:600}.warn{color:var(--warn);font-weight:600}.no{color:var(--bad);font-weight:600}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+button{font:inherit;cursor:pointer}
+.btns button,.chips button,.ghost{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 11px;font-size:13px}
+.btns button.pri,.pri{background:var(--acc);color:#fff;border:1px solid var(--acc);border-radius:10px;padding:10px 14px;font-weight:600}
+.btns button.pri{border-radius:999px;padding:6px 11px}
+.item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:5px 0;border-bottom:1px dashed var(--line)}
+.item:last-child{border:0}
+.x{border:0;background:none;color:var(--bad);font-size:16px;padding:2px 6px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 12px 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{white-space:nowrap;background:var(--card)}
+#f{display:flex;gap:8px;padding:8px 12px 10px}
+input,select{font:inherit;font-size:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 12px;outline:none;width:100%}
+input:focus,select:focus{border-color:var(--acc)}
+#in{flex:1;min-width:0;border-radius:999px;padding:11px 14px}
+#f button{border:0;background:var(--acc);color:#fff;border-radius:999px;padding:0 16px;font-weight:600}
+nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:none;color:var(--mute);padding:9px 0 8px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button b{font-size:19px;font-weight:400;line-height:1}
+nav button.on{color:var(--acc);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card h3{margin:0 0 10px;font-size:16px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.res{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.res:last-child{border:0}
+.big{font-size:22px;font-weight:700}
+.food{padding:10px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.food small{display:block;color:var(--mute)}
+.panel{background:var(--bg);border-radius:10px;padding:10px;margin-top:8px}
+.tag{font-size:11px;padding:1px 6px;border-radius:6px;background:var(--line);color:var(--mute);margin-left:4px}
+svg text{fill:var(--mute);font-size:10px}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="top"><b id="hname">Dieta TACO</b><span id="date"></span></div>
+  <div class="row"><span>Calorias</span><span id="kTxt"></span></div>
+  <div class="bar"><i id="kBar"></i></div>
+  <div class="row"><span>Proteína</span><span id="pTxt"></span></div>
+  <div class="bar p"><i id="pBar"></i></div>
+  <div class="mini" id="mini"></div>
+</header>
+
+<section class="view on" id="v-hoje">
+  <main id="chat" class="view on" style="display:flex"></main>
+  <div class="chips" id="chips"></div>
+  <form id="f"><input id="in" placeholder="Ex.: comi 150g arroz e 2 ovos" autocomplete="off" enterkeyhint="send"><button>Enviar</button></form>
+</section>
+
+<section class="view pad" id="v-alimentos">
+  <input id="busca" placeholder="Buscar na TACO (ex.: frango grelhado)" autocomplete="off">
+  <div class="s" id="buscaInfo"></div>
+  <div id="lista"></div>
+  <div class="card">
+    <h3>Cadastrar alimento</h3>
+    <div class="s">Use os valores do rótulo convertidos para 100 g.</div>
+    <label>Nome</label><input id="cNome" placeholder="Ex.: Tapioca da padaria">
+    <div class="grid2">
+      <div><label>kcal / 100 g</label><input id="cK" inputmode="decimal"></div>
+      <div><label>Proteína g</label><input id="cP" inputmode="decimal"></div>
+      <div><label>Carboidrato g</label><input id="cC" inputmode="decimal"></div>
+      <div><label>Gordura g</label><input id="cG" inputmode="decimal"></div>
+      <div><label>Peso de 1 unidade (g, opcional)</label><input id="cU" inputmode="decimal"></div>
+      <div><label>Apelido para o chat</label><input id="cA" placeholder="Ex.: tapioca"></div>
+    </div>
+    <div style="margin-top:12px"><button class="pri" id="cSalvar">Salvar alimento</button></div>
+  </div>
+</section>
+
+<section class="view pad" id="v-progresso">
+  <div class="card">
+    <h3>Registrar medidas</h3>
+    <div class="grid2">
+      <div><label>Data</label><input type="date" id="mDia"></div>
+      <div><label>Peso (kg)</label><input id="mPeso" inputmode="decimal"></div>
+      <div><label>Abdômen (cm)</label><input id="mAbd" inputmode="decimal"></div>
+      <div><label>Braço (cm)</label><input id="mBraco" inputmode="decimal"></div>
+      <div><label>Peito (cm)</label><input id="mPeito" inputmode="decimal"></div>
+      <div><label>Quadril (cm)</label><input id="mQuad" inputmode="decimal"></div>
+    </div>
+    <div class="s" style="margin-top:8px">Pese-se de manhã, em jejum, depois de ir ao banheiro. O peso mais recente atualiza suas metas.</div>
+    <div style="margin-top:12px"><button class="pri" id="mSalvar">Salvar</button></div>
+  </div>
+  <div class="card"><h3>Peso</h3><div id="grafico"></div></div>
+  <div class="card"><h3>Histórico de medidas</h3><div id="hist"></div></div>
+  <div class="card"><h3>Calorias dos últimos 14 dias</h3><div id="dias"></div></div>
+</section>
+
+<section class="view pad" id="v-perfil">
+  <div class="card" id="boasvindas" style="display:none"><h3>Bem-vindo! 👋</h3>Preencha seu perfil para eu calcular suas metas de calorias e proteína. Cada celular tem o seu próprio perfil e diário.</div>
+  <div class="card">
+    <h3>Seu perfil</h3>
+    <label>Nome</label><input id="pNome" placeholder="Seu nome">
+    <div class="grid2">
+      <div><label>Sexo</label><select id="pSexo"><option value="M">Masculino</option><option value="F">Feminino</option></select></div>
+      <div><label>Idade</label><input id="pIdade" inputmode="numeric"></div>
+      <div><label>Altura (cm)</label><input id="pAlt" inputmode="numeric"></div>
+      <div><label>Peso (kg)</label><input id="pPeso" inputmode="decimal"></div>
+    </div>
+    <label>Rotina e treino</label>
+    <select id="pAtiv">
+      <option value="1.2">Sedentário: trabalho sentado, sem treino</option>
+      <option value="1.375">Leve: trabalho sentado + treino 3–4x/semana</option>
+      <option value="1.55">Moderado: treino 5–6x/semana ou trabalho em pé</option>
+      <option value="1.725">Alto: treino diário intenso ou trabalho braçal</option>
+    </select>
+    <label>Objetivo</label>
+    <select id="pObj">
+      <option value="secar">Secar (perder gordura, déficit de 500 kcal)</option>
+      <option value="perder">Perder devagar (déficit de 300 kcal)</option>
+      <option value="manter">Manter o peso</option>
+      <option value="ganhar">Ganhar massa (superávit de 300 kcal)</option>
+    </select>
+    <div class="grid2">
+      <div><label>Meta kcal manual (opcional)</label><input id="pKman" inputmode="numeric" placeholder="automático"></div>
+      <div><label>Meta proteína manual (g)</label><input id="pPman" inputmode="numeric" placeholder="automático"></div>
+    </div>
+    <div style="margin-top:12px"><button class="pri" id="pSalvar">Salvar e calcular</button></div>
+  </div>
+  <div class="card" id="calc"></div>
+  <div class="card">
+    <h3>Backup</h3>
+    <div class="s">Os dados ficam só neste celular. Exporte de vez em quando para não perder nada se trocar de aparelho.</div>
+    <div class="btns"><button id="exp">Exportar backup</button><button id="impB">Importar backup</button></div>
+    <input type="file" id="imp" accept="application/json,.json" style="display:none">
+    <div class="s" style="margin-top:10px">Alimentos: Tabela Brasileira de Composição de Alimentos (TACO), 4ª ed., NEPA/UNICAMP, 2011. Itens marcados como “estimativa” ou “seu” não são da TACO. Este app não substitui o acompanhamento de um nutricionista.</div>
+  </div>
+</section>
+
+<nav id="nav">
+  <button data-v="hoje" class="on"><b>💬</b>Hoje</button>
+  <button data-v="alimentos"><b>🔎</b>Alimentos</button>
+  <button data-v="progresso"><b>📈</b>Progresso</button>
+  <button data-v="perfil"><b>👤</b>Perfil</button>
+</nav>
+</div>
+<script src="taco.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
